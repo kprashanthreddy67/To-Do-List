@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>To-Do List App</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background-color: #f3f4f6;
+    }
+
+    .todo-app {
+      background: white;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      border-radius: 10px;
+      padding: 20px;
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .todo-header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .todo-header h1 {
+      font-size: 1.8rem;
+      color: #333;
+    }
+
+    .todo-input-container {
+      display: flex;
+      margin-bottom: 20px;
+    }
+
+    .todo-input-container input {
+      flex: 1;
+      padding: 10px;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      outline: none;
+    }
+
+    .todo-input-container button {
+      margin-left: 10px;
+      padding: 10px 15px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 5px;
+      background-color: #4caf50;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .todo-input-container button:hover {
+      background-color: #45a049;
+    }
+
+    .todo-list {
+      list-style: none;
+    }
+
+    .todo-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+      border-bottom: 1px solid #ccc;
+    }
+
+    .todo-item span {
+      font-size: 1rem;
+      color: #333;
+      word-break: break-word;
+    }
+
+    .todo-item button {
+      border: none;
+      background: none;
+      color: #e63946;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    .todo-item button:hover {
+      color: #d62839;
+    }
+
+    .empty-state {
+      text-align: center;
+      color: #aaa;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="todo-app">
+    <div class="todo-header">
+      <h1>To-Do List</h1>
+    </div>
+    <div class="todo-input-container">
+      <input type="text" id="todo-input" placeholder="Add a new task...">
+      <button onclick="addTask()">Add</button>
+    </div>
+    <ul id="todo-list" class="todo-list">
+      <li class="empty-state">No tasks yet. Add one!</li>
+    </ul>
+  </div>
+
+  <script>
+    const todoInput = document.getElementById('todo-input');
+    const todoList = document.getElementById('todo-list');
+
+    function addTask() {
+      const taskText = todoInput.value.trim();
+
+      if (taskText === '') {
+        alert('Please enter a task!');
+        return;
+      }
+
+      const listItem = document.createElement('li');
+      listItem.className = 'todo-item';
+      listItem.innerHTML = `
+        <span>${taskText}</span>
+        <button onclick="deleteTask(this)">Delete</button>
+      `;
+
+      if (todoList.querySelector('.empty-state')) {
+        todoList.innerHTML = '';
+      }
+
+      todoList.appendChild(listItem);
+      todoInput.value = '';
+    }
+
+    function deleteTask(button) {
+      const task = button.parentElement;
+      todoList.removeChild(task);
+
+      if (todoList.children.length === 0) {
+        todoList.innerHTML = '<li class="empty-state">No tasks yet. Add one!</li>';
+      }
+    }
+
+    todoInput.addEventListener('keypress', function (event) {
+      if (event.key === 'Enter') {
+        addTask();
+      }
+    });
+  </script>
+</body>
+</html>
